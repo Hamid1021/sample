@@ -1,0 +1,65 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo.url description=seo.description keywords=seo.kyword title=seo.site_name%}
+{% endblock seo %}
+{% block title %}گالری{% endblock title%}
+{% block content%}
+        <!-- Portfolio section  -->
+        <div class="portfolio-section">
+            {% if object_list %}
+            <h4 class="text-center text-info mb-3">جهت نمایش در مقیاس بزرگتر بر روی تصویر کلیک کنید</h4>
+            {% endif %}
+            <ul class="portfolio-filter controls text-center">
+                {% if object_list %}
+                <li class="control" data-filter="all">همه</li>
+                {% for category in categories %}
+                <li class="control" data-filter=".{{ category.slug }}">{{ category.title }}</li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+            <div id="gallery" class="row portfolio-gallery m-0">
+                {% include "Base/images.html" with object_list=object_list %}
+                        {% if count_gallery > results_per_page %}
+                <div class="mix col-xl-2 col-md-3 col-sm-4 col-6 p-0 order-last">
+                    <div class="portfolio-item next-btn" id="load_more" data-page="2" style="height: 205.328px;">
+                        <h4 id="text_message" dir="rtl">نمایش بیشتر ...</h4>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Portfolio section end  -->
+{% endblock content %}
+{% block extraScript %}
+        <script>
+            (function($) {
+              $('#load_more').on('click', function() {
+                var link = $(this);
+                var page = link.data('page');
+                $.ajax({
+                  type: 'post',
+                  url: '{% url 'gallery:load_more' %}',
+                  data: {
+                    'page': page,
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                  },
+                  beforeSend:function(){
+            	$("#text_message").addClass("disabled").text("بارگذاری ...");
+              },
+                  success: function(data) {
+                    if (data.has_next) {
+                        link.data('page', page + 1);
+                    } else {
+                      link.hide();
+                    }
+                    $('#gallery').append(data.posts_html);
+                    $("#text_message").removeClass("disabled").text("نمایش بیشتر ...");
+                    {% include 'Base/script.js' %}
+                  }
+                });
+              });
+        
+            }(jQuery));
+        </script>
+{% endblock extraScript %}

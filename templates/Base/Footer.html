@@ -1,0 +1,26 @@
+<footer class="footer-section mt-5">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 order-1 order-md-2">
+                        <div class="footer-social-links">
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-dribbble"></i></a>
+                            <a href="#"><i class="fa fa-behance"></i></a>
+                        </div>
+                    </div>
+                    <div dir="rtl" class="col-md-6 order-2 order-md-1">
+                        <div class="copyright">
+                            سال :
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>
+                            _ تمامی حقوق مادی و معنوی متعلق به
+                            <a href="{% url 'gallery_home:home' %}"> {{seo.owner}} </a>
+                            می باشد
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>

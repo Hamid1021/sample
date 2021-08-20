@@ -1,0 +1,72 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo.url description=seo.description keywords=seo.kyword title=seo.site_name%}
+{% endblock seo %} 
+{% block title %}تماس با ما{% endblock title %}
+{% block content %}
+        <!-- Google Map -->
+        <div class="map">
+            <iframe src="{% if seo %}
+            {{seo.addres_google_map}}
+            {% else %}
+                https://maps.google.com/maps?q=Tehran%20Province,%20Tehran,%20District%2010,%20Azadi%20Square&t=k&z=17&ie=UTF8&iwloc=&output=embed
+            {% endif %}" style="border: 0;" allowfullscreen></iframe>
+        </div>
+        <!-- Google Map end -->
+        <!-- Contact section  -->
+        <section class="contact-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="contact-text">
+                            <h3 class="text-center">ارتباط با ما</h3>
+                            <p class="text-right">{{seo.description}}</p>
+                            <ul class="text-right">{% if seo.address != None %}
+                                <li class="text-right">{{seo.address}}</li>{% endif %} {% if seo.phone_number != None %}
+                                <li class="text-right">{{seo.phone_number}}</li>{% endif %} {% if seo.phone_number_1 != None %}
+                                <li class="text-right">{{seo.phone_number_1}}</li>{% endif %} {% if seo.phone_number_2 != None %}
+                                <li class="text-right">{{seo.phone_number_2}}</li>{% endif %} {% if seo.phone_number_3 != None %}
+                                <li class="text-right">{{seo.phone_number_3}}</li>{% endif %} {% if seo.phone_number_4 != None %}
+                                <li class="text-right">{{seo.phone_number_4}}</li>{% endif %} {% if seo.phone != None %}
+                                <li class="text-right">{{seo.phone}}</li>{% endif %} {% if seo.phone_1 != None %}
+                                <li class="text-right">{{seo.phone_1}}</li>{% endif %} {% if seo.phone_2 != None %}
+                                <li class="text-right">{{seo.phone_2}}</li>{% endif %} {% if seo.phone_3 != None %}
+                                <li class="text-right">{{seo.phone_3}}</li>{% endif %} {% if seo.phone_4 != None %}
+                                <li class="text-right">{{seo.phone_4}}</li>{% endif %} {% if seo.email != None %}
+                                <li class="text-right">{{seo.email}}</li>{% endif %} {% if seo.email_1 != None %}
+                                <li class="text-right">{{seo.email_1}}</li>{% endif %} {% if seo.telegram != None %}
+                                <li class="text-right">{{seo.telegram}}</li>{% endif %} {% if seo.telegram_1 != None %}
+                                <li class="text-right">{{seo.telegram_1}}</li>{% endif %} {% if seo.instagram != None %}
+                                <li class="text-right">{{seo.instagram}}</li>{% endif %} {% if seo.instagram_1 != None %}
+                                <li class="text-right">{{seo.instagram_1}}</li>{% endif %} {% if seo.time_work_start != None %}
+                                <li class="text-right">ساعت کاری از {{seo.time_work_start}}</li>{% endif %} {% if seo.time_work_end != None %}
+                                <li class="text-right">تا {{seo.time_work_end}}</li>{% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div dir="rtl" class="col-lg-8">
+                        <form class="contact-form" method="post">{% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    {{form.full_name}}
+                                </div>
+                                <div class="col-lg-6">
+                                    {{form.email}}
+                                </div>
+                                <div class="col-lg-12">
+                                    {{form.subject}}
+                                </div>
+                                <div class="col-lg-12">
+                                {{form.message}}
+                                <button class="site-btn" type="submit">ارسال پیام شما</button>
+                                </div>{% if message != "" %}
+                                <div class="text-success">{{message}}</div>{% endif %}{% if message_1 != "" %}
+                                <div class="text-danger">{{message_1}}</div>{% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+<!-- Contact section end  -->{% endblock content %}

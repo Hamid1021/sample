@@ -1,0 +1,115 @@
+{% load static widget_tweaks %}
+<!DOCTYPE html>
+<html lang="fa-ir">
+<head>
+	<title>ورود به سایت</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="{% static 'Login_static/images/icons/favicon.ico' %}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/fonts/iconic/css/material-design-iconic-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/css/main.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'Login_static/css/rtl.css' %}">
+
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+			{% if form.non_field_errors %}
+				<div class="errors">
+					{% for err in form.non_field_errors %}
+						<span class="sFont">{{err}}</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" method="post">
+					{% csrf_token %}
+					<span class="login100-form-title p-b-26 sFont">
+						خوش آمدید
+					</span>
+					<span class="login100-form-title p-b-48">
+						<i class="zmdi zmdi-font"></i>
+					</span>
+
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is: a@b.c">
+						{{form.username|add_class:"input100"|attr:"name:email"}}
+						{% if form.username.errors %}
+							<div class="errors">
+								{% for err in form.username.errors %}
+									<span class="sFont">{{err}}</span>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<span class="focus-input100" data-placeholder="نام کاربری"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+						{{form.password|add_class:"input100"|attr:"name:pass"}}
+						{% if form.password.errors %}
+							<div class="errors">
+								{% for err in form.password.errors %}
+									<span class="sFont">{{err}}</span>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<span class="focus-input100" data-placeholder="رمز عبور"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button type="submit" class="login100-form-btn">
+								ورود
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'Login_static/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'Login_static/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'Login_static/js/main.js' %}"></script>
+
+</body>
+</html>

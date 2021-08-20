@@ -1,0 +1,7 @@
+from django.apps import AppConfig
+
+
+class CantactConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'cantact'
+    verbose_name = "پیام کاربران"

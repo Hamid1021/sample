@@ -1,0 +1,280 @@
+{% extends 'Base/admin_base.html' %}
+{% load static widget_tweaks%}
+{% block title %}افزودن/ویرایش اطلاعات{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div dir="rtl" class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">افزودن اطلاعات</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="site_name" class="control-label text-right">نام سایت : </label>
+                                {{form.site_name|attr:"type:text"|attr:"id:site_name"|add_class:"form-control"|attr:"placeholder:نام سایت را وارد کنید"}}
+                                {% for error in form.site_name.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="owner" class="control-label text-right">صاحب سایت : </label>
+                                {{form.owner|attr:"type:text"|attr:"id:owner"|add_class:"form-control"|attr:"placeholder: نام صاحب سایت را وارد کنید"}}
+                                {% for error in form.owner.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="url" class="control-label text-right">آدرس سایت : </label>
+                                {{form.url|attr:"id:url"|add_class:"form-control"|attr:"placeholder:آدرس سایت را وارد کنید"}}
+                                {% for error in form.url.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>وضعیت</label>
+                                <div class="checkbox">
+                                    <label for="status_check">
+                                        {{form.status|attr:"id:status_check"|attr:"onclick:change_text(this)"}}
+                                        <span id="status_check_text">فعال</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="kyword" class="control-label text-right">کلید واژه های سایت : </label>
+                                {{form.kyword|attr:"id:kyword"|attr:"rows:5"|add_class:"form-control"|attr:"placeholder:کلید واژه های سایت را وارد کنید"}}
+                                {% for error in form.kyword.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="image_logo"> انتخاب تصویر لوگو: </label>
+                                {{ form.image_logo|attr:"id:image_logo"|attr:"type:file"}}
+                                <p class="help-block">لطفا از تصاویر کم حجم استفاده نمایید تا سرعت بارگذاری سایت بیشتر بشود</p>
+                            
+                                {% for error in form.image_logo.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="time_work_start" class="control-label text-right">ساعت شروع به کار : </label>
+                                {{form.time_work_start|attr:"pattern:^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"|attr:"id:time_work_start"|add_class:"form-control"|attr:"placeholder:ساعت شروع به کار را وارد کنید"}}
+                                {% for error in form.time_work_start.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="time_work_end" class="control-label text-right">ساعت پایان کار : </label>
+                                {{form.time_work_end|attr:"pattern:^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$"|attr:"id:time_work_end"|add_class:"form-control"|attr:"placeholder:ساعت پایان کار را وارد کنید"}}
+                                {% for error in form.time_work_end.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="email" class="control-label text-right">آدرس ایمیل 1 : </label>
+                                {{form.email|attr:"id:email"|add_class:"form-control"|attr:"placeholder:آدرس ایمیل 1 را وارد کنید"}}
+                                {% for error in form.email.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="email_1" class="control-label text-right">آدرس ایمیل 2 : </label>
+                                {{form.email_1|attr:"id:email_1"|add_class:"form-control"|attr:"placeholder:آدرس ایمیل 2 را وارد کنید"}}
+                                {% for error in form.email_1.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="telegram" class="control-label text-right">آدرس کانال تلگرام 1 : </label>
+                                {{form.telegram|attr:"type:text"|attr:"id:telegram"|add_class:"form-control"|attr:"placeholder:آدرس کانال تلگرام 1 را وارد کنید"}}
+                                {% for error in form.telegram.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="telegram_1" class="control-label text-right">آدرس کانال تلگرام 2 : </label>
+                                {{form.telegram_1|attr:"type:text"|attr:"id:telegram_1"|add_class:"form-control"|attr:"placeholder:آدرس کانال تلگرام 2 را وارد کنید"}}
+                                {% for error in form.telegram_1.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="instagram" class="control-label text-right">آدرس کانال اینستاگرام 1 : </label>
+                                {{form.instagram|attr:"type:text"|attr:"id:instagram"|add_class:"form-control"|attr:"placeholder:آدرس کانال اینستاگرام 1 را وارد کنید"}}
+                                {% for error in form.instagram.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="instagram_1" class="control-label text-right">آدرس کانال اینستاگرام 2 : </label>
+                                {{form.instagram_1|attr:"type:text"|attr:"id:instagram_1"|add_class:"form-control"|attr:"placeholder:آدرس کانال اینستاگرام 2 را وارد کنید"}}
+                                {% for error in form.instagram_1.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="phone_number" class="control-label text-right">شماره همراه 1 : </label>
+                                {{form.phone_number|attr:"pattern:^(\\+98|0)?9\\d{9}$"|attr:"type:text"|attr:"id:phone_number"|add_class:"form-control"|attr:"placeholder:شماره همراه 1 را وارد کنید"}}
+                                {% for error in form.phone_number.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="phone_number_1" class="control-label text-right">شماره همراه 2 : </label>
+                                {{form.phone_number_1|attr:"pattern:^(\\+98|0)?9\\d{9}$"|attr:"type:text"|attr:"id:phone_number_1"|add_class:"form-control"|attr:"placeholder:شماره همراه 2 را وارد کنید"}}
+                                {% for error in form.phone_number_1.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="phone_number_2" class="control-label text-right">شماره همراه 3 : </label>
+                                {{form.phone_number_2|attr:"pattern:^(\\+98|0)?9\\d{9}$"|attr:"type:text"|attr:"id:phone_number_2"|add_class:"form-control"|attr:"placeholder:شماره همراه 3 را وارد کنید"}}
+                                {% for error in form.phone_number_2.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="phone_number_3" class="control-label text-right">شماره همراه 4 : </label>
+                                {{form.phone_number_3|attr:"pattern:^(\\+98|0)?9\\d{9}$"|attr:"type:text"|attr:"id:phone_number_3"|add_class:"form-control"|attr:"placeholder:شماره همراه 4 را وارد کنید"}}
+                                {% for error in form.phone_number_3.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="phone" class="control-label text-right">شماره تلفن 1 : </label>
+                                {{form.phone|attr:"pattern:^\\d{3}*\\d{8}$"|attr:"type:text"|attr:"id:phone"|add_class:"form-control"|attr:"placeholder:شماره تلفن 1 را وارد کنید"}}
+                                <p class="help-block text-green">شماره تلفن باید با کد شهر آغاز گردد</p>
+                                {% for error in form.phone.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="phone_1" class="control-label text-right">شماره تلفن 2 : </label>
+                                {{form.phone_1|attr:"pattern:^\\d{3}*\\d{8}$"|attr:"type:text"|attr:"id:phone_1"|add_class:"form-control"|attr:"placeholder:شماره تلفن 2 را وارد کنید"}}
+                                <p class="help-block text-green">شماره تلفن باید با کد شهر آغاز گردد</p>
+                                {% for error in form.phone_1.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="phone_2" class="control-label text-right">شماره تلفن 3 : </label>
+                                {{form.phone_2|attr:"pattern:^\\d{3}*\\d{8}$"|attr:"type:text"|attr:"id:phone_2"|add_class:"form-control"|attr:"placeholder:شماره تلفن 3 را وارد کنید"}}
+                                <p class="help-block text-green">شماره تلفن باید با کد شهر آغاز گردد</p>
+                                {% for error in form.phone_2.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="phone_3" class="control-label text-right">شماره تلفن 4 : </label>
+                                {{form.phone_3|attr:"pattern:^\\d{3}*\\d{8}$"|attr:"type:text"|attr:"id:phone_3"|add_class:"form-control"|attr:"placeholder:شماره تلفن 4 را وارد کنید"}}
+                                <p class="help-block text-green">شماره تلفن باید با کد شهر آغاز گردد</p>
+                                {% for error in form.phone_3.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="description" class="control-label text-right">توضیحات سایت : </label>
+                                {{form.description|attr:"id:description"|attr:"rows:5"|add_class:"form-control"|attr:"placeholder:توضیحات سایت را وارد کنید"}}
+                                {% for error in form.description.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="addres_google_map" class="control-label text-right">آدرس در گوگل مپ : </label>
+                                {{form.addres_google_map|attr:"id:addres_google_map"|attr:"rows:5"|add_class:"form-control"|attr:"placeholder:آدرس در گوگل مپ را وارد کنید"}}
+                                {% for error in form.addres_google_map.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-6">
+                                <a class="btn btn-default" target="_blank" href="https://google-map-generator.com/">انتخاب موقیت مکانی</a>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label for="address" class="control-label text-right">آدرس : </label>
+                                {{form.address|attr:"id:address"|attr:"rows:4"|add_class:"form-control"|attr:"placeholder:آدرس را وارد کنید"}}
+                                {% for error in form.address.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success btn-block">ذخیره</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col (left) -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}
+{% block ex_script %}
+<script>
+    function change_text(e) {
+        if (e.checked) {
+            $("#status_check_text").text("فعال");
+        } else {
+            $("#status_check_text").text("غیر فعال");
+        }
+    }
+
+    $(document).ready(function () {
+
+        var check_active = document.getElementById("status_check");
+        if (check_active.checked == false) {
+            $("#status_check_text").text("غیر فعال");
+        }
+    });
+</script>
+{% endblock ex_script %}

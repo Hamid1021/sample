@@ -1,0 +1,28 @@
+User-agent: *
+
+Sitemap:    https://www.google.com/sitemap.xml
+
+
+Disallow:   /admin/login/?next=/admin/
+
+Disallow:   /admin/
+
+Disallow:   /static/images/
+
+Disallow:   /static/css/
+
+Disallow:   /static/js/
+
+Disallow:   /static/img/
+
+Disallow:   /media/Gallery_Home/
+
+Disallow:   /media/Gallery/
+
+Disallow:	/media/Blog/
+
+Disallow:	/media/images/
+
+Disallow:	/media/Logo/
+Disallow:	/admin/logout/
+Disallow:	/admin/password_change/

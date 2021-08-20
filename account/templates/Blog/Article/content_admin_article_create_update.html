@@ -1,0 +1,153 @@
+{% extends 'Base/admin_base.html' %}
+{% load static widget_tweaks%} 
+{% block title %}افزودن/ویرایش مقاله{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block ex_style %}
+<!-- Select2 -->
+<link href="{% static 'bower_components/select2/dist/css/select2.min.css' %}" rel="stylesheet" />
+{% endblock ex_style %}
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div dir="rtl" class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">افزودن مقاله</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                {% comment %} <p class="help-block text-green text-center">جهت ارسال مقاله دقت کنید همه فیلد ها به درستی پر شده باشند</p> {% endcomment %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="title" class="control-label text-right">عنوان مقاله : </label>
+                                {{form.title|attr:"type:text"|attr:"id:title"|add_class:"form-control"|attr:"placeholder:عنوان مقاله را وارد کنید"}}
+                                {% for error in form.title.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="slug" class="control-label text-right">عنوان در نوار آدرس : </label>
+                                {{form.slug|attr:"type:text"|attr:"id:slug"|add_class:"form-control"|attr:"placeholder:عنوان در نوار آدرس را وارد کنید"}}
+                                {% for error in form.slug.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label>دسته ها : </label>
+                                {{form.category|attr:"multiple:multiple"|attr:"data-placeholder:یک یا چند دسته انتخاب کنید"|add_class:"form-control select2"|attr:"style:width: 100%;"}}
+                                {% for error in form.category.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                            <label>وضعیت انتشار</label>
+                                {{ form.status|add_class:"form-control" }}
+                                {% for error in form.status.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="thumbnail">انتخاب تصویر شاخص : </label>
+                                {{ form.thumbnail|attr:"id:thumbnail"|attr:"type:file"}}
+                                <p class="help-block">لطفا از تصاویر کم حجم استفاده نمایید تا سرعت بارگذاری سایت بیشتر بشود</p>
+                                {% for error in form.thumbnail.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div id="keys" class="col-sm-6">
+                                <label for="keyword" class="control-label text-right">برچسب ها : </label>
+                                <div class="input-group input-group-sm">
+                                    {{form.keyword|attr:"type:text"|attr:"id:keyword"|add_class:"form-control hidden"}}
+                                    <input id="keyword_value" type="text" class="form-control" placeholder="برچسب را وارد کرده و بر روی افزودن کلیک کنید">
+                                    <span class="input-group-btn">
+                                        <button id="add_keywoad" type="button" class="btn btn-primary btn-flat">افزودن</button>
+                                    </span>
+                                </div>
+                                {% for error in form.keyword.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                                <p class="help-block">برای حذف برچسب بر روی آن کلیک کنید</p>
+                            </div>        
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label for="editor1">متن : </label>
+                                {{ form.description}}{{form.media}}
+                                {% for error in form.description.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>       
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success btn-block">ذخیره</button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col (left) -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}
+{% block ex_script %}
+<script src="{% static 'bower_components/select2/dist/js/select2.full.min.js' %}"></script>
+<script>
+    let text = "";
+    function del_tag(e){
+        $(e).remove();
+        text = "";
+        $( ".help-block-span" ).each(function(index, data) {
+            let keyword_value = $( data ).text();
+            if(keyword_value != ""){
+                text += keyword_value + ", ";
+            }
+            });
+            $("#keyword").val(text);
+    }
+    $(document).ready(function(){
+        $('.select2').select2();
+        var keywords_value = $("#keyword").val().split(", ");
+        $.each(keywords_value, function(index, data) {
+            if(data != ""){
+                var _html_key = "<sapn class='help-block-span label label-primary pull-right' onclick='del_tag(this);'>"+data.replace(",","")+"</sapn>"
+                $("#keys").append(_html_key);
+            }
+        });
+
+        $('#add_keywoad').on('click', function() {
+            var value = $("#keyword_value").val();
+            var _html = "<sapn class='help-block-span label label-primary pull-right' onclick='del_tag(this);'>"+value+"</sapn>"
+            if(value != ""){
+                $("#keys").append(_html);
+                $("#keyword_value").val("");
+            }
+            text = "";
+
+            $( ".help-block-span" ).each(function(index, data) {
+            let keyword_value = $( data ).text();
+            if(keyword_value != ""){
+                text += keyword_value + ", ";
+            }
+            });
+            $("#keyword").val(text);
+        });
+    });
+</script>
+{% endblock ex_script %}

@@ -1,0 +1,264 @@
+{% extends 'Base/admin_base.html' %}
+{% load static widget_tweaks%} 
+{% block title %}افزودن/ویرایش کاربر{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div dir="rtl" class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">افزودن کاربر</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="username" class="control-label text-right">نام کاریری : </label>
+                                {{form.username|attr:"type:text"|attr:"id:username"|add_class:"form-control"|attr:"placeholder:نام کاربری را وارد کنید"}}
+                                {% for error in form.username.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="email" class="control-label text-right">آدرس ایمیل : </label>
+                                {{form.email|attr:"type:text"|attr:"id:email"|add_class:"form-control"|attr:"placeholder: آدرس ایمیل را وارد کنید"}}
+                                {% for error in form.email.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="password" class="control-label text-right">رمز عبور : </label>
+                                {{form.password|attr:"type:text"|attr:"id:password"|add_class:"form-control"|attr:"placeholder:رمزعبور را وارد کنید"}}
+                                <p class="help-block text-green">برای عدم تغییر رمز عبور تغییر ندهید</p>
+                                {% for error in form.password.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="password_confrim" class="control-label text-right">تکرار رمز عبور : </label>
+                                <input onchange="check_password(this)" id="password_confrim" type="text" class="form-control" placeholder="تکرار رمز عبور را وارد کنید">
+                                <p id="pass_error" class="help-block text-red hidden">تکرار رمز عبور صحیح نیست</p>
+                                <p id="p_error" class="help-block text-red hidden">این فیلد الزامی است</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="first_name" class="control-label text-right">نام : </label>
+                                {{form.first_name|attr:"type:text"|attr:"id:first_name"|add_class:"form-control"|attr:"placeholder:نام را وارد کنید"}}
+                                {% for error in form.first_name.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="last_name" class="control-label text-right">نام خانواددگی : </label>
+                                {{form.last_name|attr:"type:text"|attr:"id:last_name"|add_class:"form-control"|attr:"placeholder:نام خانواددگی را وارد کنید"}}
+                                {% for error in form.last_name.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                            
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                            <label>جنسیت</label>
+                                {{ form.gender|add_class:"form-control" }}
+                                {% for error in form.gender.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>فعال/غیرفعال</label>
+                                <div class="checkbox">
+                                <label for="status_check_active">
+                                {{form.is_active|attr:"id:status_check_active"|attr:"onclick:change_text_active(this)"}}
+                                <span id="status_check_text_active">فعال</span>
+                                </label>
+                            </div>
+                                {% for error in form.status.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>کاربر نویسنده</label>
+                                <div class="checkbox">
+                                <label for="status_check_staff">
+                                {{form.is_staff|attr:"id:status_check_staff"|attr:"onclick:change_text_staff(this)"}}
+                                <span id="status_check_text_staff">فعال</span>
+                                </label>
+                            </div>
+                                {% for error in form.status.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-2">
+                                <label>کاربر ویژه</label>
+                                <div class="checkbox">
+                                <label for="status_check_superuser">
+                                {{form.is_superuser|attr:"id:status_check_superuser"|attr:"onclick:change_text_superuser(this)"}}
+                                <span id="status_check_text_superuser">فعال</span>
+                                </label>
+                            </div>
+                                {% for error in form.status.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="phone_number" class="control-label text-right">شماره همراه : </label>
+                                {{form.phone_number|attr:"onchange:check_phone()"|attr:"type:text"|attr:"id:phone_number"|add_class:"form-control"|attr:"placeholder:شماره همراه را وارد کنید"}}
+                                <p id="phone_error" class="help-block text-red hidden">شماره همراه اشتباه است</p>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="image"> انتخاب تصویر پروفایل: </label>
+                                {{ form.image|attr:"id:image"|attr:"type:file"}}
+                                <p class="help-block">لطفا از تصاویر کم حجم استفاده نمایید تا سرعت بارگذاری سایت بیشتر بشود</p>
+                                {% for error in form.image.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="{{form.user_permissions.id_for_label}}">اجازه ها را انتخاب کنید : </label>
+                                {{form.user_permissions|attr:"multiple:multiple"|attr:"data-placeholder:یک یا چند دسترسی انتخاب کنید"|add_class:"form-control"}}
+                                {% for error in form.user_permissions.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-1 text-center" style="margin-top:4.5vw;">
+                                <div id="arrow_left">
+                                    <i class="fa fa-arrow-circle-left"></i>
+                                </div>
+                                <div id="arrow_right">
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <label for="user_permissions">اجازه های انتخاب شده : </label>
+                                <select name="user_permissions" class="form-control" multiple="multiple" id="user_permissions">
+                                </select>
+                            </div>
+                        </div>
+                        {{form.pass_per_save|add_class:"hidden"|attr:"id:pass_pre"}}
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success btn-block">ذخیره</button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col (left) -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}
+{% block ex_script %}
+<script>
+    function change_text_active(e){
+        if(e.checked){
+        $("#status_check_text_active").text("فعال");
+        }else{
+        $("#status_check_text_active").text("غیر فعال");
+        }
+    }
+
+    function check_password(e){
+        var password = $("#password").val();
+        var password_confrim= $("#password_confrim").val();
+        if(password != password_confrim){
+            $("#pass_error").removeClass("hidden");
+        }else{
+            $("#pass_error").addClass("hidden");
+        }
+    }
+    
+    function change_text_staff(e){
+        if(e.checked){
+        $("#status_check_text_staff").text("فعال");
+        }else{
+        $("#status_check_text_staff").text("غیر فعال");
+        }
+    }
+    function change_text_superuser(e){
+        if(e.checked){
+        $("#status_check_text_superuser").text("فعال");
+        }else{
+        $("#status_check_text_superuser").text("غیر فعال");
+        }
+    }
+    function check_phone(phone_number){
+        var regex = new RegExp('^(\\+98|0)?9\\d{9}$');
+        var phone = phone_number.match(regex);
+        if(phone){
+            return true
+        }
+        return false
+    }
+    $(document).ready(function(){
+        var pass_pre = $("#pass_pre").val();
+        $("#password_confrim").val(pass_pre);
+
+        $('form').submit(function(e){
+            e.preventDefault();
+            var password = $("#password").val();
+            var password_confrim= $("#password_confrim").val();
+            var phone_number= $("#phone_number").val();
+
+            if(password == password_confrim){
+                if(check_phone(phone_number)){
+                    $("#phone_error").addClass("hidden");
+                    $("#p_error").addClass("hidden");
+                    $("form").unbind().submit();
+                }else{
+                    $("#phone_error").removeClass("hidden");
+                }
+            }else{    
+                $("#p_error").removeClass("hidden");
+            }
+        });
+
+        var check_active = document.getElementById("status_check_active");
+        if(check_active.checked == false){
+            $("#status_check_text_active").text("غیر فعال");
+        };
+        var check_staff = document.getElementById("status_check_staff");
+        if(check_staff.checked == false){
+            $("#status_check_text_staff").text("غیر فعال");
+        };
+        var check_superuser = document.getElementById("status_check_superuser");
+        if(check_superuser.checked == false){
+            $("#status_check_text_superuser").text("غیر فعال");
+        };
+
+        var permision_left_html = $("#{{form.user_permissions.id_for_label}}>option:selected");
+            $("#user_permissions").append(permision_left_html);
+
+        $('#arrow_left').on('click', function() {
+            var permision_left_html = $("#{{form.user_permissions.id_for_label}}>option:selected");
+            $("#user_permissions").append(permision_left_html);
+        });
+
+        $('#arrow_right').on('click', function() {
+            var permision_right_html = $("#user_permissions>option:selected");
+            $("#{{form.user_permissions.id_for_label}}").append(permision_right_html);
+        });
+
+    });
+</script>
+{% endblock ex_script %}

@@ -1,0 +1,74 @@
+{% extends 'Base/admin_base.html' %}
+{% load static %}
+{% block title %}اطلاعات سایت مپ{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header text-center">
+                    {% if object_list %}
+                        <h3 class="box-title text-center">اطلاعات سایت مپ</h3>
+                    {% endif %}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">SITE_ID</th>
+                                            <th rowspan="1" colspan="1">دامنه</th>
+                                            <th rowspan="1" colspan="1">نام</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if object_list %}
+                                            {% for sitemap in object_list %}
+                                                <tr role="row" class="odd">
+                                                    <td><a href="{% url 'admin_account:update_sitemap' sitemap.pk %}">SITE_ID : {{sitemap.pk}}</a></td>
+                                                    <td>{{sitemap.domain}}</td>
+                                                    <td>{{sitemap.name}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% else %}
+                                            <td colspan="6" class="text-red text-center">چیزی برای نمایش وجود ندارد</td>
+                                        {% endif %}
+                                        
+                                    </tbody>
+                                    {% comment %} <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">عنوان</th>
+                                            <th rowspan="1" colspan="1">تصویر بند انگشتی</th>
+                                            <th rowspan="1" colspan="1">دسته ها</th>
+                                            <th rowspan="1" colspan="1">خلاصه</th>
+                                            <th rowspan="1" colspan="1">زمان انتشار</th>
+                                            <th rowspan="1" colspan="1">وضعیت انتشار</th>
+                                        </tr>
+                                    </tfoot> {% endcomment %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}

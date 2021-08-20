@@ -1,0 +1,22 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo.url description=seo.description keywords=seo.kyword title=seo.site_name%}
+{% endblock seo %}
+{% block title %}
+خوش آمدید
+{% endblock title %}
+{% block content %}
+        <!-- Hero section  -->
+        <div class="hero-section">
+        {% for object in object_list %}
+          <div class="hero-slider owl-carousel">
+            {% for obj in object %}
+              <div class="hero-item portfolio-item set-bg" data-setbg="{{ obj.image.url }}">
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+        </div>
+<!-- Hero section end  -->
+{% endblock content %}

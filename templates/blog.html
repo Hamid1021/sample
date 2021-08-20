@@ -1,0 +1,48 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo.url description=seo.description keywords=seo.kyword title=seo.site_name%}
+{% endblock seo %}
+{% block title %}وبلاگ{% endblock title%}
+{% block content %}
+        <!-- Blog section  -->
+        <section class="blog-section">
+            <div class="blog-warp">
+                <div class="row" id="row">{% include 'Base/articles.html' with articles=articles%}
+                </div>{% if count_articles > results_per_page %}
+                <div dir="rtl" class="text-center text-sm-center load-more-warp m-5">
+                    <button class="site-btn load-more" id="load_more" data-page="2">قدیمی تر ...</button>
+                </div>{% endif %}
+            </div>
+        </section>
+        <!-- Blog section end  -->
+{% endblock content %}
+{% block extraScript %}
+        <script>
+            (function($) {
+              $('#load_more').on('click', function() {
+                var link = $(this);
+                var page = link.data('page');
+                $.ajax({
+                  type: 'post',
+                  url: '{% url 'blog:load_more' %}',
+                  data: {
+                    'page': page,
+                    'csrfmiddlewaretoken': "{{ csrf_token }}"
+                  },
+                  beforeSend:function(){
+            	$("#load_more").addClass("disabled").text("بارگذاری ...");
+              },
+                  success: function(data) {
+                    if (data.has_next) {
+                        link.data('page', page + 1);
+                    } else {
+                      link.hide();
+                    }
+                    $('#row').append(data.posts_html);
+                    $("#load_more").removeClass("disabled").text("قدیمی تر ...");
+                  }
+                });
+              });
+            }(jQuery));
+        </script>{% endblock extraScript %}

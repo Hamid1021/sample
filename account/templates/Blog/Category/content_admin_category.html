@@ -1,0 +1,139 @@
+{% extends 'Base/admin_base.html' %}
+{% load static %}
+{% block title %}لیست دسته ها{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header text-center">
+                    {% if object_list %}
+                        <h3 class="box-title text-center">لیست دسته ها</h3>
+                    {% endif %}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">عنوان دسته</th>
+                                            <th rowspan="1" colspan="1">عنوان در نوار آدرس</th>
+                                            <th rowspan="1" colspan="1">وضعیت دسته</th>
+                                            <th rowspan="1" colspan="1">امکانات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if object_list %}
+                                            {% for category in object_list %}
+                                                <tr role="row" class="odd">
+                                                    <td><a href="{% url 'admin_account:category_update' category.pk %}">{{category.title}}</a></td>
+                                                    <td>{{category.slug}}</td>
+                                                    <td>
+                                                        {% if category.status == True %}
+                                                            <span class="badge bg-green">فعال</span>
+                                                        {% elif category.status == False%}
+                                                            <span class="badge bg-red">غیر فعال</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if request.user.is_superuser %}
+                                                            <a href="{% url 'admin_account:category_delete' category.pk %}" class="badge bg-yellow">
+                                                            حذف دسته
+                                                            </a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% elif object %}
+                                            <tr role="row" class="odd">
+                                                    <td>{{object.title}}</td>
+                                                    <td>{{object.slug}}</td>
+                                                    <td>
+                                                        {% if object.status == True %}
+                                                            <span class="badge bg-green">فعال</span>
+                                                        {% elif object.status == False%}
+                                                            <span class="badge bg-red">غیر فعال</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        بدون امکانات
+                                                    </td>
+                                                </tr>
+                                            {% else %}
+                                            <td colspan="6" class="text-red text-center">چیزی برای نمایش وجود ندارد</td>
+                                        {% endif %}
+                                        
+                                    </tbody>
+                                    {% comment %} <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">عنوان دسته</th>
+                                            <th rowspan="1" colspan="1">عنوان در نوار آدرس</th>
+                                            <th rowspan="1" colspan="1">وضعیت انتشار</th>
+                                            <th rowspan="1" colspan="1">امکانات</th>
+                                        </tr>
+                                    </tfoot> {% endcomment %}
+                                </table>
+                            </div>
+                        </div>
+
+                        {% if object_list %}
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                        Showing 1 to 10 of 57 entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                        <ul class="pagination">
+                                        
+                                            <li class="paginate_button previous disabled" id="example2_previous">
+                                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                        {% if object %}
+                        <div class="box-header text-center">
+                            <form method="post">{% csrf_token %}
+                            <h3 class="box-title text-red">آیا از حذف <span class="text-green">{{object.title}}</span> اطمینان دارید ؟</h3>
+                            <div class="box-footer">
+                                <div class="col-sm-6">
+                                    <a href="{% url 'admin_account:home_category' %}" class="btn btn-success btn-block">خیر حذف نشود</a>
+                                </div> 
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-danger btn-block" value="Confrim">بله حذف شود</button>
+                                </div> 
+                            </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}

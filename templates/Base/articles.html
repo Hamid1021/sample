@@ -1,0 +1,20 @@
+                {% for article in articles %}
+                <div class="col-lg-4 col-sm-6">
+                    <div class="blog-post">
+                        <img src="{{article.thumbnail.url}}" alt="{{article.title}}" />
+                        <div class="blog-date">{{article.jpublish}}</div>
+                        <a href="{{article.get_absolute_url}}">
+                            <h3>{{article.title}}</h3>
+                        </a>
+                        <div class="blog-cata">{% for cat in article.category.all %}
+                            <span>{{cat}}</span>{% endfor %}
+                        </div>
+                        <p>{{article.description|truncatewords:20}}</p>
+                        <a href="{{article.get_absolute_url}}" class="site-btn">ادامه مطلب</a>
+                    </div>
+                </div>{% empty %}
+                <div class="col-lg-12 col-sm-12">
+                    <p class="text-danger text-center">
+                        محتوایی جهت نمایش وجود ندارد
+                    </p>
+                </div>{% endfor %}

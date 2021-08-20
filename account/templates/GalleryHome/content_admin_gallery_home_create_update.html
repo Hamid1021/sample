@@ -1,0 +1,82 @@
+{% extends 'Base/admin_base.html' %}
+{% load static widget_tweaks%} 
+{% block title %}افزودن/ویرایش تصویر{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div dir="rtl" class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">افزودن تصویر</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="position" class="control-label text-right">موقعیت : </label>
+                                {{form.position|attr:"type:number"|attr:"id:position"|add_class:"form-control"|attr:"placeholder:موقعیت را وارد کنید"}}
+                                {% for error in form.position.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label>وضعیت انتشار</label>
+                                <div class="checkbox">
+                                <label for="status_check">
+                                {{form.status|attr:"id:status_check"|attr:"onclick:change_text(this)"}}
+                                <span id="status_check_text">فعال</span>
+                                </label>
+                            </div>
+                                {% for error in form.status.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="image">انتخاب تصویر : </label>
+                                {{ form.image|attr:"id:image"|attr:"type:file"}}
+                                <p class="help-block">لطفا از تصاویر کم حجم استفاده نمایید تا سرعت بارگذاری سایت بیشتر بشود</p>
+                                {% for error in form.image.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success btn-block">ذخیره</button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col (left) -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}
+{% block ex_script %}
+<script>
+    function change_text(e){
+        if(e.checked){
+        $("#status_check_text").text("فعال");
+        }else{
+        $("#status_check_text").text("غیر فعال");
+        }
+    }
+    $(document).ready(function(){
+        var check = document.getElementById("status_check");
+        if(check.checked == false){
+            $("#status_check_text").text("غیر فعال");
+        };
+    });
+</script>
+{% endblock ex_script %}

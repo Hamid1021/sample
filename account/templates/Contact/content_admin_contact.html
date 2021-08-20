@@ -1,0 +1,150 @@
+{% extends 'Base/admin_base.html' %}
+{% load static %}
+{% block title %}لیست پیام ها{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header text-center">
+                    {% if object_list %}
+                        <h3 class="box-title text-center">لیست پیام ها</h3>
+                    {% endif %}
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">نام ارسال کننده</th>
+                                            <th rowspan="1" colspan="1">متن پیام</th>
+                                            <th rowspan="1" colspan="1">موضوع پیام</th>
+                                            <th rowspan="1" colspan="1">زمان ارسال</th>
+                                            <th rowspan="1" colspan="1">آدرس ایمیل</th>
+                                            <th rowspan="1" colspan="1">وضعیت مشاهده</th>
+                                            <th rowspan="1" colspan="1">امکانات</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% if object_list %}
+                                            {% for message in object_list %}
+                                                <tr role="row" class="odd">
+                                                    <td class="text-center"><a href="{% url 'admin_account:update_contact' message.pk %}">{{message.full_name}}</a></td>
+                                                    <td>{{message.message|truncatechars:50|striptags}}</td>
+                                                    <td>{{message.subject}}</td>
+                                                    <td>{{message.jsend_time}}</td>
+                                                    <td>{{message.email}}</td>
+                                                    <td>
+                                                        {% if message.status == "r" %}
+                                                            <span class="badge bg-green">خوانده شده</span>
+                                                        {% elif message.status == 'u' %}
+                                                            <span class="badge bg-red">خوانده نشده</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if request.user.is_superuser %}
+                                                            <a href="{% url 'admin_account:delete_contact' message.pk %}" class="badge bg-yellow">
+                                                            حذف پیام
+                                                            </a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% elif object %}
+                                            <tr role="row" class="odd">
+                                                <td class="text-center">{{message.full_name}}</td>
+                                                <td>{{message.message|truncatechars:50|striptags}}</td>
+                                                <td>{{message.subject}}</td>
+                                                <td>{{message.jsend_time}}</td>
+                                                <td>{{message.email}}</td>
+                                                <td>
+                                                    {% if message.status == "r" %}
+                                                        <span class="badge bg-green">خوانده شده</span>
+                                                    {% elif message.status == 'u' %}
+                                                        <span class="badge bg-red">خوانده نشده</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    بدون  امکانات
+                                                </td>
+                                            </tr>
+                                            {% else %}
+                                            <td colspan="6" class="text-red text-center">چیزی برای نمایش وجود ندارد</td>
+                                        {% endif %}
+                                        
+                                    </tbody>
+                                    {% comment %} <tfoot>
+                                        <tr>
+                                            <th rowspan="1" colspan="1">عنوان</th>
+                                            <th rowspan="1" colspan="1">تصویر بند انگشتی</th>
+                                            <th rowspan="1" colspan="1">دسته ها</th>
+                                            <th rowspan="1" colspan="1">خلاصه</th>
+                                            <th rowspan="1" colspan="1">زمان انتشار</th>
+                                            <th rowspan="1" colspan="1">وضعیت انتشار</th>
+                                        </tr>
+                                    </tfoot> {% endcomment %}
+                                </table>
+                            </div>
+                        </div>
+
+                        {% if object_list %}
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">
+                                        Showing 1 to 10 of 57 entries
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                        <ul class="pagination">
+                                        
+                                            <li class="paginate_button previous disabled" id="example2_previous">
+                                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0">Previous</a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+
+                    </div>
+                        {% if object %}
+                        <div class="box-header text-center">
+                            <form method="post">{% csrf_token %}
+                            <h3 class="box-title text-red">آیا از حذف <span class="text-green">{{object.message|truncatechars:10}}</span> اطمینان دارید ؟</h3>
+                            <div class="box-footer">
+                                <div class="col-sm-6">
+                                    <a href="{% url 'admin_account:home_contact' %}" class="btn btn-success btn-block">خیر حذف نشود</a>
+                                </div> 
+                                <div class="col-sm-6">
+                                    <button type="submit" class="btn btn-danger btn-block" value="Confrim">بله حذف شود</button>
+                                </div> 
+                            </div>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}

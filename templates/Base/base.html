@@ -1,0 +1,28 @@
+{% load render_partial %}
+<!DOCTYPE html>
+<html lang="fa">
+    <head>
+        <title>{% block title %}HTML Template{% endblock %}</title>
+        {% render_partial 'config.views.HeaderRefrence' %}
+        {% block seo %}{% endblock seo %}
+    </head>
+
+    <body>
+        <!-- Page Preloder -->
+        <div id="preloder">
+            <div class="loader"></div>
+        </div>
+        <!-- Search model -->
+        {% include 'Base/search.html' %}
+        <!-- Search model end -->
+        <!-- Header section  -->
+        {% render_partial 'config.views.Header' %}
+        <!-- Header section end  -->
+        {% block content %}{% endblock content %}
+        <!-- Footer section   -->
+        {% render_partial 'config.views.Footer' %}
+        <!-- Footer section end  -->
+        <!--====== Javascripts & Jquery ======-->
+        {% render_partial 'config.views.FooterRefrence' %} {% block extraScript %}{% endblock extraScript %}
+    </body>
+</html>

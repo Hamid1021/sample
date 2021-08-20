@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        {% include 'Base/meta.html' with url=seo.url description=object.description|truncatewords:20 keywords=object.keywords title=object.title%}
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        <title>{% block title %}صفحه شروع | کنترل پنل{% endblock title %}</title>
+        {% include "Base/header_ref_admin.html" %}
+        {% block ex_style %}{% endblock ex_style %}
+    </head>
+
+    <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
+            {% include "Base/Header_admin.html" %}
+            {% include "Base/sidebar_admin.html" %}
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                {% include "Base/url_bar_admin.html" %}
+                {% block content %}
+                    <!-- Main content -->
+                    <section class="content container-fluid">
+                        
+                    </section>
+                    <!-- /.content -->
+                {% endblock content %}
+            </div>
+            <!-- /.content-wrapper -->
+            <!-- Main Footer -->
+            {% include "Base/Footer_admin.html" %}
+            <!-- Add the sidebar's background. This div must be placed
+  immediately after the control sidebar -->
+        </div>
+        <!-- ./wrapper -->
+        {% include "Base/footer_ref_admin.html" %}
+        {% block ex_script %}{% endblock ex_script %}
+    </body>
+</html>

@@ -1,0 +1,7 @@
+.help-block-span {
+    display: inline !important;
+    margin: 3px !important;
+    margin-bottom: 10px !important;
+    padding: 7px !important;
+    cursor: pointer;
+}

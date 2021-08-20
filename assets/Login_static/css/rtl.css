@@ -1,0 +1,32 @@
+@font-face {
+     font-family: 'Sahel';
+     src: url("https://fdn.fontcdn.ir/Fonts/Sahel/b2d852de3483260e3b7fd41fb4ffd83ba0548ea15c189cdf02e5ef46575530a6.eot");
+     src: url("https://fdn.fontcdn.ir/Fonts/Sahel/b2d852de3483260e3b7fd41fb4ffd83ba0548ea15c189cdf02e5ef46575530a6.eot?#iefix") format("embedded-opentype"),
+          url("https://fdn.fontcdn.ir/Fonts/Sahel/8139e9fd0c48b1ec7e4088c3800568a148d2f7096e250db7a47f9591982b41bc.woff2") format("woff2"),
+          url("https://fdn.fontcdn.ir/Fonts/Sahel/f30db4907aee95b91669fd1eb93d7dfad7472fab04cc3b738eb3d33881783b06.woff") format("woff"),
+          url("https://fdn.fontcdn.ir/Fonts/Sahel/afc86cd2949756b29b764c0521a21e3bba164202c40a035c911f78cc695459b9.ttf") format("truetype");
+     font-weight: 300;
+     font-style: normal;
+}
+
+body {
+	text-align: right !important;
+	direction: rtl !important;
+	font-family: Sahel !important;
+}
+
+.sFont {
+	font-family: Sahel !important;
+}
+.btn-show-pass {
+     left: 0;
+     right: initial;
+}
+.focus-input100::after {
+     font-family: Sahel !important;
+}
+.errors {
+     color: red;
+     padding: 20px 30px;
+     background-color: #fbd4d4;
+}

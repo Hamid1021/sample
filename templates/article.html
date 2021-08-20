@@ -1,0 +1,112 @@
+{% extends 'Base/base.html' %}
+{% load static %}
+
+{% block seo %}
+{% include 'Base/meta.html' with url=seo.url description=object.description|truncatewords:20|striptags keywords=object.keyword title=object.title%}
+{% endblock seo %}
+
+{% block title %}
+
+{% endblock title %}
+
+{% block content %}
+
+<!-- About section  -->
+<section class="about-section">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 p-0">
+        <div class="about-bg set-bg mx-3" data-setbg="{{object.thumbnail.url}}"></div>
+      </div>
+      <div class="col-lg-6 p-0">
+        <div class="text-right mx-5 mt-2">
+          <h2>{{object.title}}</h2>
+          <br/>
+          <hr/>
+          <p>
+            {{object.description|safe}}
+          </p>
+          <hr/>
+          <span>منتشر شده در</span>
+          <time>{{object.jpublish}}</time>
+          <br/>
+          <span>دسته ها :</span>
+          <span class="text-dark">{{object.categories_name}}</span>
+          <br/>
+          <span>برچسب ها :</span>
+          <span class="text-dark">{{object.keyword}}</span>
+        </div>
+      </div>
+    </div>
+    <hr/>
+    
+    <div class="row">
+    
+      <div dir='rtl' class="col-lg-6 order-last">
+          <form class="contact-form" method="post">{% csrf_token %}
+            <div class="row">
+              <div class="col-lg-6">
+                {{form.full_name}}
+              </div>
+              <div class="col-lg-6">
+                {{form.email}}
+              </div>
+              <div class="col-lg-4"></div>
+              <div class="col-lg-12">
+                {{form.message}}
+                <button class="site-btn" type="submit">ارسال نظر شما</button>
+              </div>
+              {% if message != "" %}<div class="text-success mr-2">{{message}}</div>{% endif %}
+              {% if message_1 != "" %}<div class="text-danger mr-2">{{message_1}}</div>{% endif %}
+            </div>
+          </form>
+      </div>
+
+      <div dir='rtl' id="com" class="col-lg-6">
+          {% include "Base/comments.html" with comments=comments %}
+      </div>
+    </div>
+    {% if count_comments > results_per_page_comments %}
+      <div dir="rtl" class="text-left load-more-warp">
+        <button class="site-btn load-more" id="load_more" data-page="2">نظرات قدیمی تر ...</button>
+      </div>
+    {% endif %}
+  </div>
+</section>
+<!-- About section end  -->
+{% endblock content %}
+
+{% block extraScript %}
+<script>
+    (function($) {
+      $('#load_more').on('click', function() {
+        var link = $(this);
+        var page = link.data('page');
+        console.log(page);
+        $.ajax({
+          type: 'post',
+          url: '{% url 'blog:load_more_2' %}',
+          data: {
+            'page': page,
+            'csrfmiddlewaretoken': "{{ csrf_token }}",
+            'pk':{{pk}},
+            'slug':"{{slug}}"
+          },
+          beforeSend:function(){
+					$("#load_more").addClass("disabled").text("بارگذاری ...");
+				  },
+          success: function(data) {
+            console.log(data);
+            if (data.has_next) {
+                link.data('page', page + 1);
+            } else {
+              link.hide();
+            }
+            $('#com').append(data.posts_html);
+            $("#load_more").removeClass("disabled").text("قدیمی تر ...");
+          }
+        });
+      });
+    }(jQuery));
+</script>
+{% endblock extraScript %}

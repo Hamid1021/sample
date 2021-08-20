@@ -1,0 +1,50 @@
+{% extends 'Base/admin_base.html' %}
+{% load static widget_tweaks%} 
+{% block title %}اطلاعات سایت مپ{% endblock title %}
+{% block seo %}
+{% include 'Base/meta.html' with url=seo_object.url description=seo_object.description|truncatewords:20|striptags keywords=seo_object.keyword title=seo_object.title %}
+{% endblock seo %}
+{% block content %}
+<!-- Main content -->
+<section class="content container-fluid">
+    <div dir="rtl" class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">اطلاعات سایت مپ</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label for="domain" class="control-label text-right">آدرس دامنه : </label>
+                                {{form.domain|attr:"type:text"|attr:"id:domain"|add_class:"form-control"|attr:"placeholder:آدرس دامنه را وارد کنید"}}
+                                {% for error in form.domain.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="name" class="control-label text-right">نام : </label>
+                                {{form.name|attr:"type:text"|attr:"id:name"|add_class:"form-control"|attr:"placeholder: نام ایمیل را وارد کنید"}}
+                                {% for error in form.name.errors%}
+                                    <p class="help-block text-red">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-success btn-block">ذخیره</button>
+                        </div> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.col (left) -->
+    </div>
+</section>
+<!-- /.content -->
+{% endblock content %}

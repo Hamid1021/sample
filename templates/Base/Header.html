@@ -1,0 +1,15 @@
+<header dir="rtl" class="header-section mb-5">
+            <a title="تماس با ما" href="{% url 'cantact:cantact' %}" class="site-logo"><img src="{{seo.image_logo.url}}" alt="{{seo.site_name}}" /></a>
+            <div class="header-controls">
+                <button class="nav-switch-btn"><i class="fa fa-bars"></i></button>
+                <button class="search-btn"><i class="fa fa-search"></i></button>
+            </div>
+            <ul class="main-menu">
+                <li class="float-right"><a href="{% url 'gallery_home:home' %}">صفحه اصلی</a></li>
+                <li class="float-right"><a href="{% url 'gallery:gallery'%}">گالری</a></li>
+                <li class="float-right"><a href="{% url 'blog:blog' %}">وبلاگ</a></li>
+                <li class="float-right"><a href="{% url 'cantact:cantact' %}">تماس با ما</a></li>
+                <li class="search-mobile search-btn float-left m-1 ml-3"><i class="fa fa-search"></i></li>
+            </ul>
+        </header>
+        <div class="clearfix"></div>
